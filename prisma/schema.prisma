@@ -1,0 +1,157 @@
+// ReviveFund Prisma schema
+// Learn more: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String         @id @default(cuid())
+  email        String         @unique
+  passwordHash String
+  name         String
+  /// BACKER | OWNER | EXPERT
+  role         String
+  createdAt    DateTime       @default(now())
+  updatedAt    DateTime       @updatedAt
+
+  contributions Contribution[]
+  businesses    Business[]     @relation("OwnerBusinesses")
+  expertOffers  ExpertOffer[]  @relation("ExpertOffersByUser")
+  adoptions     Adoption[]
+  sessions      Session[]
+}
+
+model Session {
+  id        String   @id @default(cuid())
+  token     String   @unique
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  expiresAt DateTime
+
+  @@index([userId])
+  @@index([expiresAt])
+}
+
+model Business {
+  id                  String        @id @default(cuid())
+  name                String
+  slug                String        @unique
+  category            String
+  city                String
+  country             String?
+  latitude            Float
+  longitude           Float
+  shortDescription    String
+  story               String
+  fundingGoal         Int
+  currentFunded       Int           @default(0)
+  emergency           Boolean       @default(false)
+  healthScore         Int
+  riskScore           Int
+  revivalScore        Int           @default(0)
+  recoveryProbability Float         // 0–1
+  minRecommendedPledge Int
+  maxRecommendedPledge Int
+
+  // JSON string: { history: [{ month, revenue, expenses }] }
+  monthlyRevenue      String
+  expensesMonthly     Int
+  // JSON string: { items: [{ label, percent }] }
+  fundUsagePlan       String
+  // JSON string: { milestones: [{ label, status, summary }] }
+  timeline            String
+  beforeImageUrl      String
+  afterImageUrl       String
+
+  owner    User?  @relation("OwnerBusinesses", fields: [ownerId], references: [id])
+  ownerId  String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  contributions Contribution[]
+  updates       UpdateLog[]
+  expertOffers  ExpertOffer[]
+  adoptions     Adoption[]
+}
+
+model Contribution {
+  id         String      @id @default(cuid())
+  amount     Int         // in rSOL
+  /// DONATION | INVESTMENT | REVENUE_SHARE | REWARD
+  type       String
+  note       String?
+  createdAt  DateTime    @default(now())
+
+  user       User        @relation(fields: [userId], references: [id])
+  userId     String
+
+  business   Business    @relation(fields: [businessId], references: [id])
+  businessId String
+}
+
+model UpdateLog {
+  id         String     @id @default(cuid())
+  business   Business   @relation(fields: [businessId], references: [id])
+  businessId String
+
+  title      String
+  body       String
+  /// FUNDING | MILESTONE | NOTE | SYSTEM
+  type       String
+  createdAt  DateTime   @default(now())
+
+  amount     Int?
+  tag        String?
+}
+
+model ExpertOffer {
+  id           String       @id @default(cuid())
+
+  business     Business?    @relation(fields: [businessId], references: [id])
+  businessId   String?
+
+  expert       User         @relation("ExpertOffersByUser", fields: [expertId], references: [id])
+  expertId     String
+
+  title        String
+  description  String
+  /// OPEN | ACCEPTED | COMPLETED
+  status       String       @default("OPEN")
+  rewardRsol   Int
+
+  createdAt    DateTime     @default(now())
+  acceptedAt   DateTime?
+  completedAt  DateTime?
+
+  adoptions    Adoption[]
+}
+
+model Adoption {
+  id           String         @id @default(cuid())
+
+  user         User           @relation(fields: [userId], references: [id])
+  userId       String
+
+  business     Business       @relation(fields: [businessId], references: [id])
+  businessId   String
+
+  offer        ExpertOffer?   @relation(fields: [offerId], references: [id])
+  offerId      String?
+
+  /// ACTIVE | COMPLETED | CANCELLED
+  status       String         @default("ACTIVE")
+  // JSON string: { items: [{ label, done, impact }] }
+  tasks        String
+  earnedRsol   Int            @default(0)
+
+  createdAt    DateTime       @default(now())
+  completedAt  DateTime?
+}
