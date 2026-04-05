@@ -2,17 +2,47 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: 210 20% 7%;
-  --foreground: 210 20% 96%;
+@import "leaflet/dist/leaflet.css";
+
+@layer base {
+  :root {
+    --background: 222 47% 4%;
+    --foreground: 210 40% 98%;
+    --card: 222 47% 6%;
+    --card-foreground: 210 40% 98%;
+    --popover: 222 47% 6%;
+    --popover-foreground: 210 40% 98%;
+    --primary: 162 84% 56%;
+    --primary-foreground: 222 47% 11%;
+    --secondary: 217 32% 17%;
+    --secondary-foreground: 210 40% 98%;
+    --muted: 217 32% 17%;
+    --muted-foreground: 215 20% 65%;
+    --accent: 162 84% 56%;
+    --accent-foreground: 210 40% 98%;
+    --destructive: 0 62% 30%;
+    --destructive-foreground: 210 40% 98%;
+    --border: 217 32% 17%;
+    --input: 217 32% 17%;
+    --ring: 162 84% 56%;
+    --radius: 0.75rem;
+  }
 }
 
 body {
-  @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))] antialiased;
+  @apply bg-background text-foreground antialiased selection:bg-accent/30 selection:text-accent selection:font-medium;
+  background-image: 
+    radial-gradient(at 0% 0%, hsla(162, 84%, 56%, 0.05) 0, transparent 50%), 
+    radial-gradient(at 100% 0%, hsla(210, 40%, 98%, 0.03) 0, transparent 50%);
 }
 
 .glass-panel {
-  @apply rounded-3xl border border-border/70 bg-card-soft/80 shadow-soft-elevated backdrop-blur;
+  @apply rounded-3xl border border-white/5 bg-white/[0.02] shadow-2xl backdrop-blur-xl transition-all duration-300;
+  box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+}
+
+.glass-panel:hover {
+  @apply border-white/10 bg-white/[0.04];
 }
 
 .page-shell {
@@ -20,6 +50,46 @@ body {
 }
 
 .pill {
-  @apply inline-flex items-center gap-1 rounded-full border border-border/60 bg-muted/60 px-3 py-1 text-xs font-medium text-slate-200;
+  @apply inline-flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold text-white/80 transition-all hover:bg-white/10;
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s ease-out forwards;
+}
+
+.animate-slide-up {
+  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Neural pulse effect for AI startups */
+.neural-pulse {
+  position: relative;
+}
+
+.neural-pulse::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  background: conic-gradient(from 0deg, transparent, hsla(162, 84%, 56%, 0.5), transparent);
+  border-radius: inherit;
+  animation: rotate 4s linear infinite;
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 

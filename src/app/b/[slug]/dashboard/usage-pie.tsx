@@ -46,9 +46,13 @@ export function FundUsagePie({ items }: Props) {
                 fontSize: 11,
               }}
               labelStyle={{ color: "#e2e8f0" }}
-              formatter={(value: unknown, name: string, entry) => [
+              formatter={(
+                value: unknown,
+                name: string | undefined,
+                entry: { payload?: { label?: string } },
+              ) => [
                 `${Math.round(Number(value))}%`,
-                entry?.payload?.label ?? name,
+                entry?.payload?.label ?? name ?? "",
               ]}
             />
           </PieChart>

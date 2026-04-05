@@ -61,7 +61,7 @@ export function RevenueChart({ history }: Props) {
             fontSize: 11,
           }}
           labelStyle={{ color: "#e2e8f0" }}
-          formatter={(value: unknown, name: string) => [
+          formatter={(value: unknown, name?: string) => [
             `${Number(value).toLocaleString()} rSOL`,
             name === "revenue" ? "Revenue" : "Expenses",
           ]}

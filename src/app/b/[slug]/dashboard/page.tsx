@@ -26,7 +26,7 @@ export default async function BusinessDashboardPage({ params }: Props) {
   if (!business) {
     return (
       <div className="glass-panel p-6 text-sm text-slate-200">
-        No dashboard for this ID. Try navigating from the home urgency board.
+        No dashboard for this venture. Try navigating from the home urgency board.
       </div>
     );
   }
@@ -52,14 +52,14 @@ export default async function BusinessDashboardPage({ params }: Props) {
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
             <p className="pill border-border/70 bg-muted-soft/70 text-[11px]">
-              Transparency dashboard
+              Impact & Recovery Dashboard
             </p>
             <h1 className="mt-2 text-lg font-semibold tracking-tight text-slate-50 sm:text-xl">
               {business.name}
             </h1>
             <p className="max-w-xl text-xs text-slate-300">
               Follow how rSOL is allocated, how revenue is trending, and how close this
-              business is to a clean recovery.
+              venture is to a clean recovery.
             </p>
           </div>
           <div className="text-right text-[11px] text-slate-400">
@@ -71,14 +71,15 @@ export default async function BusinessDashboardPage({ params }: Props) {
               goal
             </p>
             <p className="mt-1">
-              Health score:{" "}
+              AI Health:{" "}
               <span className="font-semibold text-slate-100">
                 {analysis.healthScore}/100
               </span>{" "}
-              · Risk:{" "}
+              · AI Risk:{" "}
               <span className="font-semibold text-slate-100">
                 {analysis.riskScore}/100 ({analysis.riskLabel})
               </span>
+              <span className="block mt-0.5 text-[10px] text-slate-500">Computed from trend signals (runway, revenue/expense slope, urgency).</span>
             </p>
           </div>
         </div>
@@ -93,15 +94,18 @@ export default async function BusinessDashboardPage({ params }: Props) {
       <section className="grid gap-4 md:grid-cols-[minmax(0,2.2fr)_minmax(0,1.8fr)]">
         <div className="glass-panel flex flex-col gap-3 p-4">
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-            Revenue & burn
+            Operational Stability Trend
           </h2>
           <p className="text-xs text-slate-300">
             Monthly revenue vs. expenses over the last six months, showing how close this
-            business is to break-even and what your rSOL is protecting.
+            venture is to break-even and what your rSOL is protecting.
           </p>
           <div className="h-56">
             <RevenueChart history={monthly.history ?? []} />
           </div>
+          <p className="text-[10px] text-slate-500">
+            AI uses these trend signals to estimate recovery probability.
+          </p>
         </div>
 
         <div className="glass-panel flex flex-col gap-3 p-4">
@@ -115,16 +119,19 @@ export default async function BusinessDashboardPage({ params }: Props) {
           <div className="h-56">
             <FundUsagePie items={usage.items ?? []} />
           </div>
+          <p className="text-[10px] text-slate-500">
+            AI uses these trend signals to estimate recovery probability.
+          </p>
         </div>
       </section>
 
       <section className="grid gap-4 md:grid-cols-[minmax(0,2.4fr)_minmax(0,1.6fr)]">
         <div className="glass-panel flex flex-col gap-3 p-4 text-xs">
           <h2 className="text-[11px] font-semibold uppercase tracking-[0.18em] text-slate-400">
-            Live turnaround timeline
+            Live revival timeline
           </h2>
           <p className="text-slate-300">
-            Day 1 / 7 / 30 / 60 milestones. You can see what&apos;s been hit, what slipped,
+            Day 1 / 7 / 30 / 60 milestones. See what&apos;s been hit, what slipped,
             and what your rSOL is buying time for.
           </p>
           <Timeline milestones={timeline.milestones ?? []} />
@@ -165,7 +172,7 @@ export default async function BusinessDashboardPage({ params }: Props) {
             ))}
             {business.updates.length === 0 && (
               <p className="text-[11px] text-slate-500">
-                No updates yet — in a real deployment, operators would post weekly notes
+                No updates yet — in a real deployment, venture operators would post weekly notes
                 here.
               </p>
             )}

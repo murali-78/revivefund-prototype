@@ -67,6 +67,8 @@ model Business {
   fundUsagePlan       String
   // JSON string: { milestones: [{ label, status, summary }] }
   timeline            String
+  // JSON string: array of image URLs
+  gallery             String        @default("[]")
   beforeImageUrl      String
   afterImageUrl       String
 
