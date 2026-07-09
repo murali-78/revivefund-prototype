@@ -2,6 +2,7 @@ import { prisma } from "@/lib/prisma";
 import { analyzeBusiness } from "@/lib/health";
 import { BusinessCard } from "@/components/BusinessCard";
 import { Zap, Activity, Globe, Users } from "lucide-react";
+import Link from "next/link";
 
 export default async function Home() {
   const businesses = await prisma.business.findMany({
@@ -52,12 +53,12 @@ export default async function Home() {
               Identify at-risk climate and green health ventures, predict recovery potential, and enable transparent community backing.
             </p>
             <div className="flex flex-wrap gap-4 pt-4">
-               <button className="px-8 py-4 bg-accent text-background rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-all shadow-lg shadow-accent/20">
+               <Link href="#directory" className="px-8 py-4 bg-accent text-background rounded-2xl font-black uppercase tracking-widest text-xs hover:scale-105 transition-all shadow-lg shadow-accent/20 text-center">
                  Explore Ventures
-               </button>
-               <button className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all">
+               </Link>
+               <Link href="#how-it-works" className="px-8 py-4 bg-white/5 border border-white/10 text-white rounded-2xl font-black uppercase tracking-widest text-xs hover:bg-white/10 transition-all text-center">
                  How it works
-               </button>
+               </Link>
             </div>
           </div>
 
@@ -122,7 +123,7 @@ export default async function Home() {
       )}
 
       {/* Main Grid */}
-      <section className="space-y-8 mt-4">
+      <section id="directory" className="space-y-8 mt-4">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 px-4 border-l-2 border-accent/20 pl-6">
           <div className="space-y-1">
             <h2 className="text-2xl font-black tracking-tight text-white">Venture Directory</h2>
@@ -150,7 +151,7 @@ export default async function Home() {
       </section>
 
       {/* Footer Info */}
-      <section className="mt-12 p-8 rounded-[2rem] bg-accent/[0.02] border border-accent/5 flex flex-col items-center text-center space-y-6">
+      <section id="how-it-works" className="mt-12 p-8 rounded-[2rem] bg-accent/[0.02] border border-accent/5 flex flex-col items-center text-center space-y-6">
          <div className="w-12 h-12 rounded-2xl bg-accent/20 flex items-center justify-center text-accent">
             <Globe className="w-6 h-6" />
          </div>

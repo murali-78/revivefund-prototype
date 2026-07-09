@@ -1,14 +1,44 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import Link from "next/link";
+import { Inter } from "next/font/google";
 import { getCurrentUser } from "@/lib/auth";
 import { logoutAction } from "@/app/auth/actions";
 import "./globals.css";
 import { Zap, ShieldCheck } from "lucide-react";
 
+const inter = Inter({
+  subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+export const viewport: Viewport = {
+  themeColor: "#0a0f1a",
+  width: "device-width",
+  initialScale: 1,
+};
+
 export const metadata: Metadata = {
   title: "ReviveFund — AI-Powered Revival Platform for Green Health & Climate Startups",
   description:
     "ReviveFund is an AI-powered demo platform for backing green health and climate startups: impact credits, community support, and expert help for ventures at the edge.",
+  openGraph: {
+    title: "ReviveFund — AI-Powered Climate Startup Revival",
+    description:
+      "Back struggling green health & climate ventures with rSOL impact credits. AI-ranked urgency, transparent dashboards, community recovery.",
+    type: "website",
+    siteName: "ReviveFund",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ReviveFund — Climate Startup Revival Platform",
+    description:
+      "AI-powered platform for backing green health & climate startups through community-driven impact credits.",
+  },
+  robots: {
+    index: true,
+    follow: true,
+  },
 };
 
 export default async function RootLayout({
@@ -19,8 +49,8 @@ export default async function RootLayout({
   const user = await getCurrentUser();
 
   return (
-    <html lang="en" className="dark scroll-smooth">
-      <body className="bg-background text-foreground selection:bg-accent/30 selection:text-accent font-sans selection:font-medium">
+    <html lang="en" className={`dark scroll-smooth ${inter.variable}`}>
+      <body className={`${inter.className} bg-background text-foreground selection:bg-accent/30 selection:text-accent font-sans selection:font-medium`}>
         <div className="page-shell">
           {/* Top nav */}
           <header className="flex items-center justify-between gap-4 py-4 relative z-50">
@@ -111,7 +141,7 @@ export default async function RootLayout({
                 </p>
               </div>
               <div className="flex items-center gap-8 text-[11px] font-bold uppercase tracking-widest text-muted-foreground/60">
-                <p>© 2026 REVIVEFUND RESEARCH LABS</p>
+                <p>&copy; 2026 REVIVEFUND RESEARCH LABS</p>
                 <p className="hidden sm:inline italic">BUILT FOR DIALOGUE</p>
               </div>
             </div>
